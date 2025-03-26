@@ -19,12 +19,12 @@ To run this application, you need to have Flutter installed on your machine. Fol
 3. Run `flutter pub get` to install the dependencies.
 4. create an `.env` file and add the following environment variable values.
 
-``
+```
 
 URL=https://skmjcdev-fluttertest-main-19184952.dev.odoo.com/
 DATABASE=skmjcdev-fluttertest-main-19184952
 
-``
+```
 
 6. Connect your device or emulator.
 7. Run `flutter run` to launch the app.
