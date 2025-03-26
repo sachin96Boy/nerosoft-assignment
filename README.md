@@ -21,7 +21,7 @@ To run this application, you need to have Flutter installed on your machine. Fol
 
 ```
 
-URL=https://skmjcdev-fluttertest-main-19184952.dev.odoo.com/
+URL=https://skmjcdev-fluttertest-main-19184952.dev.odoo.com
 DATABASE=skmjcdev-fluttertest-main-19184952
 
 ```
