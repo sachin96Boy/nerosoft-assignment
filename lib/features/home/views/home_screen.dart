@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nerosoft_app/features/auth/provider/auth_provider.dart';
+import 'package:nerosoft_app/common/components/sales_card.dart';
 import 'package:nerosoft_app/features/auth/service/auth_service.dart';
+import 'package:nerosoft_app/features/home/provider/sales_provider.dart';
 import 'package:nerosoft_app/features/home/service/home_service.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -23,30 +24,43 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authResponse = ref.watch(authResponseProvider);
+    final salesItemsProvider = ref.watch(salesResponseProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text('Nerosoft Home'),
         centerTitle: true,
         actions: [
-          IconButton(onPressed: _handleLogout, icon: Icon(Icons.logout))
+          IconButton(
+              onPressed: _handleLogout,
+              icon: Icon(Icons.logout),
+              style: IconButton.styleFrom(
+                  padding: EdgeInsets.all(4),
+                  backgroundColor: Colors.grey.shade300,
+                  foregroundColor: Colors.red))
         ],
       ),
       body: Center(
         child: SizedBox(
-          child: authResponse.when(
-            data: (value) {
-              return Column(
-                children: [
-                  Text('body of home'),
-                  Text(value.auth!.uid.toString()),
-                  Text(value.auth!.password),
-                  TextButton(onPressed: handlefilter, child: Text('submit'))
-                ],
-              );
+          child: salesItemsProvider.when(
+            data: (salesItemList) {
+              return salesItemList.isNotEmpty
+                  ? ListView.separated(
+                      itemCount: salesItemList.length,
+                      itemBuilder: (context, index) {
+                        return SalesTile(salesmodel: salesItemList[index]);
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return SizedBox(
+                          height: 10,
+                        );
+                      },
+                    )
+                  : SizedBox(
+                      child: Text("Please Insert Data"),
+                    );
             },
             error: (error, stackTrace) {
-              return Text(error.toString());
+              return SingleChildScrollView(child: Text(error.toString()));
             },
             loading: () => Center(
               child: CircularProgressIndicator(),

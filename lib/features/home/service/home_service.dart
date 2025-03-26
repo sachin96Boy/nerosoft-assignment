@@ -12,7 +12,7 @@ class HomeService extends AutoDisposeNotifier<AsyncValue<dynamic>> {
     return AsyncValue.data(null);
   }
 
-  Future<void> getSalesData() async {
+  Future<List<SalesModel>> getSalesData() async {
     try {
       final salesUri = Uri.parse(Api.sales);
 
@@ -38,8 +38,8 @@ class HomeService extends AutoDisposeNotifier<AsyncValue<dynamic>> {
             'fields': [
               'name',
               'company_id',
-              'access_url'
-                  'partner_id',
+              'access_url',
+              'partner_id',
               'date_order',
               'create_date',
               'state'
@@ -55,8 +55,9 @@ class HomeService extends AutoDisposeNotifier<AsyncValue<dynamic>> {
           return sale;
         }).toList();
 
-        print(output[0]);
+        return salesList;
       }
+      return [];
     } on Exception catch (err) {
       print(err);
       throw Exception(err.toString());
