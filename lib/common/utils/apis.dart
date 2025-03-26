@@ -5,5 +5,6 @@ class Api {
   static String? database = dotenv.env['DATABASE'];
 
   static final String login = '$baseUrl/xmlrpc/2/common';
+  static final String sales = '$baseUrl/xmlrpc/2/object';
   static final String databaseIns = '$database';
 }

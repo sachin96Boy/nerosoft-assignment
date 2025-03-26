@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nerosoft_app/features/auth/provider/auth_provider.dart';
 import 'package:nerosoft_app/features/auth/service/auth_service.dart';
+import 'package:nerosoft_app/features/home/service/home_service.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   static const routeName = '/home';
@@ -14,6 +15,10 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   void _handleLogout() async {
     await ref.read(authServiceProvider.notifier).logout();
+  }
+
+  void handlefilter() async {
+    await ref.read(homeServiceProvider.notifier).getSalesData();
   }
 
   @override
@@ -36,6 +41,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   Text('body of home'),
                   Text(value.auth!.uid.toString()),
                   Text(value.auth!.password),
+                  TextButton(onPressed: handlefilter, child: Text('submit'))
                 ],
               );
             },
