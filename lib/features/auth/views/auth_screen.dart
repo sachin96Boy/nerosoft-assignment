@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:nerosoft_app/features/auth/provider/auth_provider.dart';
 
 import 'package:nerosoft_app/features/auth/service/auth_service.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class AuthScreen extends ConsumerStatefulWidget {
   const AuthScreen({super.key});
@@ -49,6 +52,12 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
       // save uid in localstorage
     } catch (err) {
       print(err);
+      showTopSnackBar(
+        Overlay.of(context),
+        CustomSnackBar.error(
+          message: err.toString(),
+        ),
+      );
     } finally {
       _formKey.currentState!.reset();
       handleLoading();
@@ -57,6 +66,24 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(authResponseProvider, (prv, next) {
+      if (next.value != null) {
+        showTopSnackBar(
+          Overlay.of(context),
+          CustomSnackBar.success(
+            message: "Welcome back",
+          ),
+        );
+      } else {
+        showTopSnackBar(
+          Overlay.of(context),
+          CustomSnackBar.error(
+            message: "Invalid Credentials",
+          ),
+        );
+      }
+    });
+
     return Scaffold(
       body: Form(
         key: _formKey,
