@@ -47,8 +47,10 @@ class MyApp extends ConsumerWidget {
         error: (error, stackTrace) {
           return Scaffold(body: Text(error.toString()));
         },
-        loading: () => Center(
-          child: CircularProgressIndicator(),
+        loading: () => Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(),
+          ),
         ),
       ),
       routes: {

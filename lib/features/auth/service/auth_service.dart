@@ -19,18 +19,27 @@ class AuthService extends AutoDisposeNotifier<AsyncValue<dynamic>> {
 
       final response = await xml_rpc.call(loginUri, 'version', []);
 
-      final uid = await xml_rpc.call(loginUri, 'authenticate',
+      final responsedata = await xml_rpc.call(loginUri, 'authenticate',
           [Api.databaseIns, username, password, response]);
 
-      final authResponse = uid as int;
+      if (responsedata == false) {
+        throw Exception("Invalid credentials");
+      }
 
-      final result = AuthResponse(auth: AuthModel(uid: authResponse));
+      final authResponse = responsedata as int;
+
+      final result =
+          AuthResponse(auth: AuthModel(uid: authResponse, password: password));
 
       ref.read(authResponseProvider.notifier).setResponse(result);
     } on Exception catch (err) {
       print(err);
       throw Exception(err.toString());
     }
+  }
+
+  Future<void> logout() async {
+    await ref.read(authResponseProvider.notifier).logout();
   }
 }
 

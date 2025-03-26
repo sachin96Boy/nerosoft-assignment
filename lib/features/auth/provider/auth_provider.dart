@@ -7,6 +7,7 @@ import 'package:nerosoft_app/features/auth/models/auth_model.dart';
 
 class AuthResponseNotifier extends AutoDisposeAsyncNotifier<AuthResponse> {
   static const USER = 'user';
+  static const PASSWORD = 'password';
 
   @override
   FutureOr<AuthResponse> build() async {
@@ -19,8 +20,11 @@ class AuthResponseNotifier extends AutoDisposeAsyncNotifier<AuthResponse> {
     final pref = ref.read(sharedPrefLocalProvider);
 
     final uid = await pref.asncPrefs.getString(USER);
+    final password = await pref.asncPrefs.getString(PASSWORD);
 
-    final user = uid != null ? AuthModel(uid: int.parse(uid)) : null;
+    final user = uid != null && password != null
+        ? AuthModel(uid: int.parse(uid), password: password)
+        : null;
 
     return AuthResponse(auth: user);
   }
@@ -52,6 +56,7 @@ class AuthResponseNotifier extends AutoDisposeAsyncNotifier<AuthResponse> {
   Future<void> setUser(AuthResponse response) async {
     final pref = ref.read(sharedPrefLocalProvider);
     await pref.asncPrefs.setString(USER, response.auth!.uid.toString());
+    await pref.asncPrefs.setString(PASSWORD, response.auth!.password);
   }
 }
 

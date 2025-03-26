@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nerosoft_app/features/auth/provider/auth_provider.dart';
+import 'package:nerosoft_app/features/auth/service/auth_service.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   static const routeName = '/home';
@@ -11,6 +12,10 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+  void _handleLogout() async {
+    await ref.read(authServiceProvider.notifier).logout();
+  }
+
   @override
   Widget build(BuildContext context) {
     final authResponse = ref.watch(authResponseProvider);
@@ -18,6 +23,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       appBar: AppBar(
         title: Text('Nerosoft Home'),
         centerTitle: true,
+        actions: [
+          IconButton(onPressed: _handleLogout, icon: Icon(Icons.logout))
+        ],
       ),
       body: Center(
         child: SizedBox(
@@ -27,6 +35,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 children: [
                   Text('body of home'),
                   Text(value.auth!.uid.toString()),
+                  Text(value.auth!.password),
                 ],
               );
             },
