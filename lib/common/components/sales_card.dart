@@ -37,8 +37,8 @@ class SalesTile extends ConsumerWidget {
           decoration:
               BoxDecoration(color: Colors.white, shape: BoxShape.circle),
           child: Icon(
-            salesmodel.state == '' ? Icons.cases : Icons.note,
-            color: Colors.green,
+            salesmodel.state == 'draft' ? Icons.cases_outlined : Icons.note,
+            color: salesmodel.state == 'draft' ? Colors.red : Colors.green,
           ),
         ),
         title: Column(
