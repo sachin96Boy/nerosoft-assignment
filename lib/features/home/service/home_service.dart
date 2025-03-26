@@ -63,6 +63,57 @@ class HomeService extends AutoDisposeNotifier<AsyncValue<dynamic>> {
       throw Exception(err.toString());
     }
   }
+
+  Future<void> callAction() async {
+    try {
+      final salesUri = Uri.parse(Api.sales);
+
+      final authresponseData = ref.read(authResponseProvider).value;
+
+      if (authresponseData != null) {
+        final responseData = await xml_rpc.call(salesUri, 'execute_kw', [
+          Api.databaseIns,
+          authresponseData.auth!.uid,
+          authresponseData.auth!.password,
+          'sale.order',
+          'fields_get',
+          [],
+          {
+            'attributes': ['string', 'help', 'type']
+          }
+        ]);
+
+        print(responseData);
+      }
+    } on Exception catch (err) {
+      print(err);
+      throw Exception(err.toString());
+    }
+  }
+
+  Future<void> callActiononaTile(int id) async {
+    try {
+      final salesUri = Uri.parse(Api.sales);
+
+      final authresponseData = ref.read(authResponseProvider).value;
+
+      if (authresponseData != null) {
+        final responseData = await xml_rpc.call(salesUri, 'execute_kw', [
+          Api.databaseIns,
+          authresponseData.auth!.uid,
+          authresponseData.auth!.password,
+          'sale.order',
+          'action_confirm',
+          [id]
+        ]);
+
+        print(responseData);
+      }
+    } on Exception catch (err) {
+      print(err);
+      throw Exception(err.toString());
+    }
+  }
 }
 
 final homeServiceProvider =

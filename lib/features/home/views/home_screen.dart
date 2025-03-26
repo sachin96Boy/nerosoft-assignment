@@ -19,7 +19,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   void handlefilter() async {
-    await ref.read(homeServiceProvider.notifier).getSalesData();
+    await ref.read(homeServiceProvider.notifier).callAction();
   }
 
   @override
@@ -31,12 +31,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         centerTitle: true,
         actions: [
           IconButton(
-              onPressed: _handleLogout,
-              icon: Icon(Icons.logout),
-              style: IconButton.styleFrom(
-                  padding: EdgeInsets.all(4),
-                  backgroundColor: Colors.grey.shade300,
-                  foregroundColor: Colors.red))
+            onPressed: _handleLogout,
+            icon: Icon(Icons.logout),
+            style: IconButton.styleFrom(
+                padding: EdgeInsets.all(4),
+                backgroundColor: Colors.grey.shade300,
+                foregroundColor: Colors.red),
+          ),
+          IconButton(
+            onPressed: handlefilter,
+            icon: Icon(Icons.star),
+            style: IconButton.styleFrom(
+                padding: EdgeInsets.all(4),
+                backgroundColor: Colors.grey.shade300,
+                foregroundColor: Colors.yellow),
+          ),
         ],
       ),
       body: Center(
